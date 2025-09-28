@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Tickets</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>Book Your Pass</h1></header>
+  <div class="container">
+    <form id="bookingForm">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="text" id="college" placeholder="College Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <select id="seat" required>
+        <option value="">Select Seat Type</option>
+        <option value="General">General</option>
+        <option value="VIP">VIP</option>
+      </select>
+      <button type="submit">Confirm Booking</button>
+    </form>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const event = params.get("event");
+
+    document.getElementById("bookingForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const booking = {
+        event,
+        name: document.getElementById("name").value,
+        college: document.getElementById("college").value,
+        email: document.getElementById("email").value,
+        seat: document.getElementById("seat").value
+      };
+      localStorage.setItem("booking", JSON.stringify(booking));
+      window.location.href = "confirm.html";
+    });
+  </script>
+</body>
+</html>
