@@ -108,6 +108,22 @@ body {
       transform: scale(0.95);
       box-shadow: 0 3px 8px rgba(0,0,0,0.2);
     }
+    .download-btn {
+      display: block;
+      margin: 30px auto;
+      padding: 12px 25px;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .download-btn:hover {
+      background: #1e874b;
+    }
     form input, form select {
   width: 100%;
   padding: 0.6rem;
@@ -115,3 +131,4 @@ body {
   border-radius: 6px;
   border: 1px solid #ccc;
 }
+
