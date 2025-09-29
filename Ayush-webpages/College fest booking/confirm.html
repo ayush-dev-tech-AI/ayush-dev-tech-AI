@@ -8,11 +8,41 @@
 </head>
 <body>
   <header><h1>Booking Confirmed 🎉</h1></header>
+  <div id="ui-content">
+    <p>Your booking has been successfully confirmed! Below are your booking details and a QR code for entry.</p>
   <div class="card" id="confirmation"></div>
   <div class="card" style="text-align:center;">
     <canvas id="qr"></canvas>
   </div>
+  </div>
+  <button class="download-btn" onclick="downloadPDF()">📄 Download PDF</button>
+
+  <!-- JS Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
   <script>
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+
+      // Capture the UI section
+      const element = document.getElementById("ui-content");
+      const canvas = await html2canvas(element, { scale: 2 });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      // Calculate image size to fit A4
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let position = 0;
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+
+      pdf.save("CollegeFest2025.pdf");
+    }
     const booking = JSON.parse(localStorage.getItem("booking"));
     if (!booking) {
       document.getElementById("confirmation").innerHTML = "<p>No booking found.</p>";
@@ -27,31 +57,6 @@
       QRCode.toCanvas(document.getElementById("qr"), JSON.stringify(booking), function (error) {
         if (error) console.error(error);
       });
-    }
-  </script>
-  <button class="download-btn" onclick="downloadPDF()">📄 Download PDF</button>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  
-  <script>
-    async function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-
-      const element = document.getElementById("ui-content");
-      const canvas = await html2canvas(element, { scale: 2 });
-
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = pageWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      let position = 0;
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-
-      pdf.save("CollegeFest2025.pdf");
     }
   </script>
 </body>
