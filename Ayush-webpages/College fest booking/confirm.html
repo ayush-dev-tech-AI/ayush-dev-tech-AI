@@ -24,22 +24,53 @@
   <script>
     async function downloadPDF() {
       const { jsPDF } = window.jspdf;
-
-      // Capture the UI section
-      const element = document.getElementById("ui-content");
-      const canvas = await html2canvas(element, { scale: 2 });
-
-      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
 
-      // Calculate image size to fit A4
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = pageWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      // Decorative border
+      pdf.setDrawColor(100, 100, 255);
+      pdf.setLineWidth(2);
+      pdf.rect(10, 10, 190, 277, "S");
 
-      let position = 0;
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      // Title
+      pdf.setFontSize(26);
+      pdf.setTextColor(44, 62, 80);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("🎉 College Fest 2025 - Booking Confirmation 🎉", 105, 30, { align: "center" });
+
+      // Decorative line
+      pdf.setDrawColor(255, 0, 100);
+      pdf.setLineWidth(1.2);
+      pdf.line(20, 38, 190, 38);
+
+      // Booking details box
+      const booking = JSON.parse(localStorage.getItem("booking"));
+      if (!booking) {
+        pdf.setFontSize(14);
+        pdf.text("❌ No booking data found.", 105, 100, { align: "center" });
+      } else {
+        pdf.setFontSize(18);
+        pdf.setTextColor(30, 144, 255);
+        pdf.text("Booking Details", 20, 55);
+
+        pdf.setFontSize(14);
+        pdf.setTextColor(0, 0, 0);
+
+        pdf.text(`📌 Event: ${booking.event}`, 20, 70);
+        pdf.text(`👤 Name: ${booking.name}`, 20, 80);
+        pdf.text(`🏫 College: ${booking.college}`, 20, 90);
+        pdf.text(`📧 Email: ${booking.email}`, 20, 100);
+        pdf.text(`🎟 Seat: ${booking.seat}`, 20, 110);
+
+        // Add QR code to PDF
+        const qrCanvas = document.getElementById("qr");
+        const qrDataUrl = qrCanvas.toDataURL("image/png");
+        pdf.addImage(qrDataUrl, "PNG", 140, 70, 50, 50);
+
+        // Footer note
+        pdf.setFontSize(12);
+        pdf.setTextColor(100, 100, 100);
+        pdf.text("⚠ Please carry this PDF as your entry pass.", 105, 270, { align: "center" });
+      }
 
       pdf.save("CollegeFest2025.pdf");
     }
