@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Queue System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>⚡ Task Queue System</h1>
+
+  <div class="input-section">
+    <input type="text" id="taskInput" placeholder="Enter a task..." />
+    <button onclick="addTask()">Add Task</button>
+  </div>
+
+  <div class="actions">
+    <button class="process" onclick="processTask()">Process Task</button>
+  </div>
+
+  <div class="task-list">
+    <h3>Queue</h3>
+    <ul id="taskList"></ul>
+  </div>
+
+  <p id="status"></p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -17,6 +17,7 @@ function sendMessage() {
   if (input.value.trim() === "") return;
 
   const msg = document.createElement("div");
+  sendToBackend(input.value);
   msg.classList.add("message", "sent");
   msg.innerText = input.value;
 
